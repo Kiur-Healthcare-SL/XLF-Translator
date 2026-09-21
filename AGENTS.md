@@ -20,16 +20,21 @@ per-artifact rules live in [openspec/config.yaml](openspec/config.yaml).
 - Apply: keep summaries concise.
 - Archive: summarize the archive outcome before finishing.
 
+## Git: no write operations
+
+**Agents MUST NOT perform any git write operation.** This is a hard requirement,
+not a preference, and it holds no matter who asks or how the request is phrased.
+
 ## Architecture
 
 Four layers, dependencies pointing inwards only:
 
-| Layer | Contains | Must not contain |
-| --- | --- | --- |
-| `domain/` | Business entities and value objects | Any I/O, XML, Streamlit or framework import |
-| `application/` | Use cases, and the ports they depend on | Concrete adapters |
-| `infrastructure/` | XLIFF parsing and serialisation, file I/O, encoding, compression | Business rules |
-| `presentation/` | Streamlit pages, widgets, session-state adapters | Business logic of any kind |
+| Layer             | Contains                                                         | Must not contain                            |
+| ----------------- | ---------------------------------------------------------------- | ------------------------------------------- |
+| `domain/`         | Business entities and value objects                              | Any I/O, XML, Streamlit or framework import |
+| `application/`    | Use cases, and the ports they depend on                          | Concrete adapters                           |
+| `infrastructure/` | XLIFF parsing and serialisation, file I/O, encoding, compression | Business rules                              |
+| `presentation/`   | Streamlit pages, widgets, session-state adapters                 | Business logic of any kind                  |
 
 `presentation -> application -> domain`. `infrastructure` implements
 `application` ports and is wired in at the composition root. The business logic
