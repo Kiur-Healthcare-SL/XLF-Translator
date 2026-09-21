@@ -1,0 +1,59 @@
+schema: spec-driven
+
+context: |
+  Product: a Streamlit app for translating Angular XLIFF 1.2 (.xlf) message catalogs.
+  Flow: upload .xlf -> parse -> show source language -> pick target locale ->
+  paginate trans-units 10 per page -> type target text per unit -> save batch ->
+  optionally sign on a canvas -> download the translated .xlf.
+
+  Tech stack: Python 3.11+, Streamlit (presentation only), standard library
+  xml.etree/lxml for XLIFF, pytest for tests.
+
+  Architecture: strict Clean Architecture in four layers.
+    - domain/         Business entities and value objects only. No I/O, no
+                      framework imports, no Streamlit, no XML libraries.
+    - application/    Use cases orchestrating domain objects. Depends on domain
+                      and on ports (abstract interfaces) it declares itself.
+    - infrastructure/ Implementation details: XLIFF parsing/serialisation, file
+                      I/O, encoding and compression. Implements application ports.
+    - presentation/   Streamlit pages, widgets and session-state adapters. Holds
+                      no business logic; it only calls use cases and renders their
+                      results. Business rules must be testable with no Streamlit.
+  Dependencies point inwards only: presentation -> application -> domain.
+  infrastructure depends on application ports, never the reverse.
+
+  Code style: Object Calisthenics.
+    1. One level of indentation per method.
+    2. No else keyword.
+    3. Wrap all primitives and strings in value objects (LanguageCode, UnitId,
+       SourceText, TargetText, PageNumber...).
+    4. First-class collections (a class holding a collection holds no other field).
+    5. One dot per line.
+    6. No abbreviations in names.
+    7. Keep entities small.
+    8. No class with more than two instance variables.
+    9. No getters/setters/public properties; tell, don't ask.
+  Hard limits: functions under 20 lines, classes under 200 lines.
+  One class per file, named after the class, with its own dedicated unit test
+  file mirroring the package path.
+
+rules:
+  proposal:
+    - Keep proposals under 500 words
+  design:
+    - State which layer each new concept belongs to (domain, application, infrastructure, presentation)
+    - Name the ports and their implementations explicitly
+  specs:
+    - Write requirements that can be verified without starting Streamlit
+  tasks:
+    - Break tasks into chunks of max 1 hour
+    - Each task that adds a class also adds its unit test file
+
+operations:
+  apply:
+    guidance:
+      - Keep the summaries concise
+      - Verify function, class and layering limits before marking a task done
+  archive:
+    guidance:
+      - Summarize the archive outcome before finishing
