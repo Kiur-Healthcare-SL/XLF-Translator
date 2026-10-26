@@ -6,7 +6,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python3 \"${CLAUDE_PROJECT_DIR:-.}/tools/git-write-guard/guard.py\" --claude",
+            "command": "G=\"${CLAUDE_PROJECT_DIR:-.}/tools/git-write-guard/guard.py\"; if [ -f \"$G\" ]; then exec python3 \"$G\" --claude; fi; grep -qE '\\bg(it|h)\\b' || exit 0; printf '%s' '{\"hookSpecificOutput\":{\"hookEventName\":\"PreToolUse\",\"permissionDecision\":\"deny\",\"permissionDecisionReason\":\"The git write guard at tools/git-write-guard/guard.py is missing, so git and gh commands are refused. Restore that file, or remove this PreToolUse hook from .claude/settings.json.\"}}'",
             "timeout": 10,
             "statusMessage": "Checking for git write operations..."
           }
