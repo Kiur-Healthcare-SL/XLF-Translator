@@ -5,9 +5,11 @@ Working agreement for any agent contributing to this repository.
 ## What this project is
 
 A Streamlit application for translating Angular XLIFF 1.2 (`.xlf`) message
-catalogs: upload, parse, paginate, translate in batches, sign, download.
-See [design-notes.md](design-notes.md) for the feature list, the reference input
-file and the decisions already taken.
+catalogs one translation unit per screen: upload, translate with Angular's
+inline placeholders masked as `{1}`...`{n}`, save drafts at any time, and
+download the finished catalog once every unit is valid.
+See [design-notes.md](design-notes.md) for the work and decisions deferred to
+later changes.
 
 ## Workflow
 
@@ -33,7 +35,7 @@ Four layers, dependencies pointing inwards only:
 | ----------------- | ---------------------------------------------------------------- | ------------------------------------------- |
 | `domain/`         | Business entities and value objects                              | Any I/O, XML, Streamlit or framework import |
 | `application/`    | Use cases, and the ports they depend on                          | Concrete adapters                           |
-| `infrastructure/` | XLIFF parsing and serialisation, file I/O, encoding, compression | Business rules                              |
+| `infrastructure/` | XLIFF parsing and serialisation, encoding checks                 | Business rules                              |
 | `presentation/`   | Streamlit pages, widgets, session-state adapters                 | Business logic of any kind                  |
 
 `presentation -> application -> domain`. `infrastructure` implements

@@ -13,15 +13,19 @@ context: |
   Both exports go through the browser save dialog, so the app never chooses a
   location on disk.
 
+  Uploads are limited to 4 MiB and must be XLIFF 1.2 encoded as UTF-8; anything
+  else is refused with a reason naming what was expected.
+
   Placeholder safety is the point of the product. Angular's inline <x/> elements
-  are masked as {1}...{n} while a human edits, and unmasked losslessly on write,
-  so the emitted XML is byte-equivalent for everything the translator did not
-  change. A unit whose target placeholders do not match its source's is invalid:
+  are masked as {1}...{n} while a human edits, and unmasked losslessly on write.
+  Output keeps the structure of everything the translator did not change: every
+  element, attribute, text and comment, including <note> and <context-group>.
+  Byte-level formatting such as attribute quoting is not guaranteed. A unit whose target placeholders do not match its source's is invalid:
   the app refuses to move off it and refuses to export the catalog. Clearing a
   target is always permitted, so no unit can trap the translator.
 
   Out of scope for now: machine translation, and signing or embedding a
-  signature image.
+  signature image. Deferred decisions live in design-notes.md.
 
   Tech stack: Python 3.11+, Streamlit (presentation only), the standard library
   xml.etree.ElementTree for XLIFF, pytest for tests.

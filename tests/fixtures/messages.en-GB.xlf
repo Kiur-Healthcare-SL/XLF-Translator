@@ -1,0 +1,516 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+  <file source-language="es" target-language="en-GB" datatype="plaintext" original="ng2.template">
+    <body>
+      <trans-unit id="app.title" datatype="html">
+        <source>Analizador de TAC</source>
+        <target>CT Scan Analyser</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/app/app.component.html</context>
+          <context context-type="linenumber">10</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="app.subtitle" datatype="html">
+        <source>Visualización y análisis de tomografías computarizadas</source>
+        <target state="translated">Viewing and analysis of computed tomography scans</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/app/app.component.html</context>
+          <context context-type="linenumber">17</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="study.format.dicom" datatype="html">
+        <source>DICOM</source>
+        <target>DICOM</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/studies/studies.component.html</context>
+          <context context-type="linenumber">24</context>
+        </context-group>
+        <note priority="1" from="description">Name of the medical image file format</note>
+      </trans-unit>
+      <trans-unit id="nav.studies" datatype="html">
+        <source>Estudios</source>
+        <target>Studies</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/app/app.component.html</context>
+          <context context-type="linenumber">31</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="viewer.limitedMode" datatype="html">
+        <source>Modo de <x id="START_BOLD_TEXT" ctype="x-b" equiv-text="&lt;b&gt;"/>funcionalidad limitada<x id="CLOSE_BOLD_TEXT" ctype="x-b" equiv-text="&lt;/b&gt;"/> activo</source>
+        <target><x id="START_BOLD_TEXT" ctype="x-b" equiv-text="&lt;b&gt;"/>Limited functionality<x id="CLOSE_BOLD_TEXT" ctype="x-b" equiv-text="&lt;/b&gt;"/> mode active</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/viewer/viewer.component.html</context>
+          <context context-type="linenumber">38</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="nav.patients" datatype="html">
+        <source>Pacientes</source>
+        <target>Patients</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/app/app.component.html</context>
+          <context context-type="linenumber">45</context>
+        </context-group>
+        <note priority="1" from="description">Main navigation entry</note>
+        <note priority="1" from="meaning">navigation</note>
+      </trans-unit>
+      <trans-unit id="nav.reports" datatype="html">
+        <source>Informes</source>
+        <target>Reports</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/app/app.component.html</context>
+          <context context-type="linenumber">52</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="viewer.back" datatype="html">
+        <source>  Volver al listado</source>
+        <target>  Back to list</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/viewer/viewer.component.html</context>
+          <context context-type="linenumber">59</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="viewer.zoomIn" datatype="html">
+        <source>Ampliar</source>
+        <target>Zoom in</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/viewer/viewer.component.html</context>
+          <context context-type="linenumber">66</context>
+        </context-group>
+        <note priority="1" from="description">Toolbar button</note>
+      </trans-unit>
+      <trans-unit id="viewer.pan" datatype="html">
+        <source>Desplazar imagen</source>
+        <target>Pan image</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/viewer/viewer.component.html</context>
+          <context context-type="linenumber">73</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="viewer.window" datatype="html">
+        <source>Ajuste de ventana</source>
+        <target>Window adjustment</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/viewer/viewer.component.html</context>
+          <context context-type="linenumber">80</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="3f9a1c0b7e2d4a6c8b1e0f3a5d7c9b2e4f6a8c0d" datatype="html">
+        <source>Estudio de <x id="INTERPOLATION" equiv-text="{{ patient.fullName }}"/></source>
+        <target>Study for <x id="INTERPOLATION" equiv-text="{{ patient.fullName }}"/></target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/studies/studies.component.html</context>
+          <context context-type="linenumber">87</context>
+        </context-group>
+        <note priority="1" from="description">Heading of the study viewer</note>
+        <note priority="1" from="meaning">viewer heading</note>
+      </trans-unit>
+      <trans-unit id="viewer.axial" datatype="html">
+        <source>Corte axial</source>
+        <target>Axial slice</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/viewer/viewer.component.html</context>
+          <context context-type="linenumber">94</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="viewer.coronal" datatype="html">
+        <source>Corte coronal</source>
+        <target>Coronal slice</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/viewer/viewer.component.html</context>
+          <context context-type="linenumber">101</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="viewer.meanDensity" datatype="html">
+        <source>Densidad media: </source>
+        <target>Mean density: </target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/viewer/viewer.component.html</context>
+          <context context-type="linenumber">108</context>
+        </context-group>
+        <note priority="1" from="description">Label before a Hounsfield value</note>
+      </trans-unit>
+      <trans-unit id="viewer.sagittal" datatype="html">
+        <source>Corte sagital</source>
+        <target>Sagittal slice</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/viewer/viewer.component.html</context>
+          <context context-type="linenumber">115</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="units.hounsfield" datatype="html">
+        <source>Hounsfield</source>
+        <target>Hounsfield</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/viewer/viewer.component.html</context>
+          <context context-type="linenumber">122</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="viewer.measure" datatype="html">
+        <source>Medir distancia</source>
+        <target>Measure distance</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/viewer/viewer.component.html</context>
+          <context context-type="linenumber">129</context>
+        </context-group>
+        <note priority="1" from="description">Toolbar button</note>
+        <note priority="1" from="meaning">measurement tool</note>
+      </trans-unit>
+      <trans-unit id="studies.reviewWarning" datatype="html">
+        <source><x id="START_BOLD_TEXT" ctype="x-b" equiv-text="&lt;b&gt;"/>Atención<x id="CLOSE_BOLD_TEXT" ctype="x-b" equiv-text="&lt;/b&gt;"/>: revise <x id="START_BOLD_TEXT" ctype="x-b" equiv-text="&lt;b&gt;"/>todas<x id="CLOSE_BOLD_TEXT" ctype="x-b" equiv-text="&lt;/b&gt;"/> las series antes de validar</source>
+        <target><x id="START_BOLD_TEXT" ctype="x-b" equiv-text="&lt;b&gt;"/>Warning<x id="CLOSE_BOLD_TEXT" ctype="x-b" equiv-text="&lt;/b&gt;"/>: review <x id="START_BOLD_TEXT" ctype="x-b" equiv-text="&lt;b&gt;"/>all<x id="CLOSE_BOLD_TEXT" ctype="x-b" equiv-text="&lt;/b&gt;"/> series before validating</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/studies/studies.component.html</context>
+          <context context-type="linenumber">136</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="viewer.roi" datatype="html">
+        <source>Región de interés</source>
+        <target>Region of interest</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/viewer/viewer.component.html</context>
+          <context context-type="linenumber">143</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="viewer.annotate" datatype="html">
+        <source>Añadir anotación</source>
+        <target>Add annotation</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/viewer/viewer.component.html</context>
+          <context context-type="linenumber">150</context>
+        </context-group>
+        <note priority="1" from="description">Toolbar button</note>
+      </trans-unit>
+      <trans-unit id="viewer.reset" datatype="html">
+        <source>Restablecer vista</source>
+        <target>Reset view</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/viewer/viewer.component.html</context>
+          <context context-type="linenumber">157</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="viewer.help" datatype="html">
+        <source><x id="START_PARAGRAPH" ctype="x-p" equiv-text="&lt;p&gt;"/>Use <x id="START_BOLD_TEXT" ctype="x-b" equiv-text="&lt;b&gt;"/>Ctrl<x id="CLOSE_BOLD_TEXT" ctype="x-b" equiv-text="&lt;/b&gt;"/> + rueda para ampliar,<x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br/&gt;"/><x id="START_BOLD_TEXT_1" ctype="x-b" equiv-text="&lt;b&gt;"/>Mayús<x id="CLOSE_BOLD_TEXT_1" ctype="x-b" equiv-text="&lt;/b&gt;"/> + arrastrar para desplazar y <x id="START_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;i&gt;"/>doble clic<x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i&gt;"/> para restablecer.<x id="LINE_BREAK_1" ctype="lb" equiv-text="&lt;br/&gt;"/><x id="CLOSE_PARAGRAPH" ctype="x-p" equiv-text="&lt;/p&gt;"/></source>
+        <target><x id="START_PARAGRAPH" ctype="x-p" equiv-text="&lt;p&gt;"/>Use <x id="START_BOLD_TEXT" ctype="x-b" equiv-text="&lt;b&gt;"/>Ctrl<x id="CLOSE_BOLD_TEXT" ctype="x-b" equiv-text="&lt;/b&gt;"/> + wheel to zoom,<x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br/&gt;"/><x id="START_BOLD_TEXT_1" ctype="x-b" equiv-text="&lt;b&gt;"/>Shift<x id="CLOSE_BOLD_TEXT_1" ctype="x-b" equiv-text="&lt;/b&gt;"/> + drag to pan and <x id="START_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;i&gt;"/>double-click<x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i&gt;"/> to reset.<x id="LINE_BREAK_1" ctype="lb" equiv-text="&lt;br/&gt;"/><x id="CLOSE_PARAGRAPH" ctype="x-p" equiv-text="&lt;/p&gt;"/></target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/viewer/viewer.component.html</context>
+          <context context-type="linenumber">164</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="series.count" datatype="html">
+        <source>Número de series</source>
+        <target>Number of series</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/studies/studies.component.html</context>
+          <context context-type="linenumber">171</context>
+        </context-group>
+        <note priority="1" from="description">Column header in the series table</note>
+        <note priority="1" from="meaning">series table</note>
+      </trans-unit>
+      <trans-unit id="series.thickness" datatype="html">
+        <source>Grosor de corte</source>
+        <target>Slice thickness</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/studies/studies.component.html</context>
+          <context context-type="linenumber">178</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="status.loading" datatype="html">
+        <source>   Cargando estudio…</source>
+        <target>   Loading study…</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/app/app.component.html</context>
+          <context context-type="linenumber">5</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="viewer.mpr" datatype="html">
+        <source>MPR</source>
+        <target>MPR</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/viewer/viewer.component.html</context>
+          <context context-type="linenumber">12</context>
+        </context-group>
+        <note priority="1" from="description">Multiplanar reconstruction toggle</note>
+      </trans-unit>
+      <trans-unit id="status.ready" datatype="html">
+        <source>Listo</source>
+        <target>Ready</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/app/app.component.html</context>
+          <context context-type="linenumber">19</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="status.error" datatype="html">
+        <source>No se pudo cargar la serie</source>
+        <target>The series could not be loaded</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/app/app.component.html</context>
+          <context context-type="linenumber">26</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="layout.spacer" datatype="html">
+        <source>   </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/app/app.component.html</context>
+          <context context-type="linenumber">33</context>
+        </context-group>
+        <note priority="1" from="description">Invisible spacer kept for layout</note>
+        <note priority="1" from="meaning">layout</note>
+      </trans-unit>
+      <!-- Export and reporting screens -->
+      <trans-unit id="export.title" datatype="html">
+        <source>Exportar imágenes</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/export/export.component.html</context>
+          <context context-type="linenumber">40</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="export.format" datatype="html">
+        <source>Formato de salida</source>
+        <target>Output format</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/export/export.component.html</context>
+          <context context-type="linenumber">47</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="export.series" datatype="html">
+        <source>Serie: </source>
+        <target>Series: </target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/export/export.component.html</context>
+          <context context-type="linenumber">54</context>
+        </context-group>
+        <note priority="1" from="description">Label before the series name</note>
+      </trans-unit>
+      <trans-unit id="export.anonymise" datatype="html">
+        <source>Anonimizar datos del paciente</source>
+        <target>Anonymise patient data</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/export/export.component.html</context>
+          <context context-type="linenumber">61</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="export.start" datatype="html">
+        <source>Iniciar exportación</source>
+        <target>Start export</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/export/export.component.html</context>
+          <context context-type="linenumber">68</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="export.tip" datatype="html">
+        <source>&lt;p&gt;&lt;b&gt;Consejo&lt;/b&gt;&lt;/p&gt; Exporte en DICOM para conservar los metadatos.</source>
+        <target>&lt;p&gt;&lt;b&gt;Tip&lt;/b&gt;&lt;/p&gt; Export as DICOM to keep the metadata.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/export/export.component.html</context>
+          <context context-type="linenumber">75</context>
+        </context-group>
+        <note priority="1" from="description">Help text under the export form</note>
+        <note priority="1" from="meaning">export help</note>
+      </trans-unit>
+      <trans-unit id="export.done" datatype="html">
+        <source>Exportación completada</source>
+        <target>Export complete</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/export/export.component.html</context>
+          <context context-type="linenumber">82</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="report.title" datatype="html">
+        <source>Informe radiológico</source>
+        <target>   </target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/reports/reports.component.html</context>
+          <context context-type="linenumber">89</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="report.findings" datatype="html">
+        <source>Hallazgos</source>
+        <target>Findings</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/reports/reports.component.html</context>
+          <context context-type="linenumber">96</context>
+        </context-group>
+        <note priority="1" from="description">Section heading in the report</note>
+      </trans-unit>
+      <trans-unit id="report.conclusion" datatype="html">
+        <source> Conclusión </source>
+        <target> Conclusion </target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/reports/reports.component.html</context>
+          <context context-type="linenumber">103</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="export.namePattern" datatype="html">
+        <source>Patrón de nombre: {serie}_{1}.dcm</source>
+        <target>Name pattern: {serie}_{1}.dcm</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/export/export.component.html</context>
+          <context context-type="linenumber">110</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="report.radiologist" datatype="html">
+        <source>Radiólogo responsable</source>
+        <target>Responsible radiologist</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/reports/reports.component.html</context>
+          <context context-type="linenumber">117</context>
+        </context-group>
+        <note priority="1" from="description">Label of the signing radiologist field</note>
+        <note priority="1" from="meaning">report field</note>
+      </trans-unit>
+      <trans-unit id="report.date" datatype="html">
+        <source>Fecha del estudio</source>
+        <target>Study date</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/reports/reports.component.html</context>
+          <context context-type="linenumber">124</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="viewer.close" datatype="html">
+        <source><x id="START_TAG_BUTTON" ctype="x-button" equiv-text="&lt;button mat-icon-button (click)=&quot;close()&quot;&gt;"/><x id="START_TAG_MAT_ICON" ctype="x-mat-icon" equiv-text="&lt;mat-icon&gt;"/>close<x id="CLOSE_TAG_MAT_ICON" ctype="x-mat-icon" equiv-text="&lt;/mat-icon&gt;"/> Cerrar visor<x id="CLOSE_TAG_BUTTON" ctype="x-button" equiv-text="&lt;/button&gt;"/></source>
+        <target>close Close viewer</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/viewer/viewer.component.html</context>
+          <context context-type="linenumber">131</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="report.print" datatype="html">
+        <source>Imprimir informe</source>
+        <target>Print report</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/reports/reports.component.html</context>
+          <context context-type="linenumber">138</context>
+        </context-group>
+        <note priority="1" from="description">Report action</note>
+      </trans-unit>
+      <trans-unit id="report.preview" datatype="html">
+        <source>Vista previa</source>
+        <target>Preview</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/reports/reports.component.html</context>
+          <context context-type="linenumber">145</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="help.manual" datatype="html">
+        <source>Consulte el <x id="START_LINK" ctype="x-a" equiv-text="&lt;a href=&quot;/manual&quot;&gt;"/>manual de usuario<x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a&gt;"/></source>
+        <target>See the <x id="START_LINK" ctype="x-a" equiv-text="&lt;a href=&quot;/manual&quot;&gt;"/>user manual<x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a&gt;"/></target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/help/help.component.html</context>
+          <context context-type="linenumber">152</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="settings.title" datatype="html">
+        <source>Preferencias</source>
+        <target>Preferences</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/settings/settings.component.html</context>
+          <context context-type="linenumber">159</context>
+        </context-group>
+        <note priority="1" from="description">Settings page heading</note>
+        <note priority="1" from="meaning">settings</note>
+      </trans-unit>
+      <trans-unit id="help.shortcuts" datatype="html">
+        <source>Atajos: &lt;kbd&gt;W&lt;/kbd&gt; ventana, &lt;kbd&gt;Z&lt;/kbd&gt; zoom</source>
+        <target>Shortcuts: &lt;kbd&gt;W&lt;/kbd&gt; window, &lt;kbd&gt;Z&lt;/kbd&gt; zoom</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/help/help.component.html</context>
+          <context context-type="linenumber">166</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="common.ok" datatype="html">
+        <source>OK</source>
+        <target>OK</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/app/app.component.html</context>
+          <context context-type="linenumber">173</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="common.cancel" datatype="html">
+        <source>Cancelar</source>
+        <target>Cancel</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/app/app.component.html</context>
+          <context context-type="linenumber">180</context>
+        </context-group>
+        <note priority="1" from="description">Dialog button</note>
+      </trans-unit>
+      <trans-unit id="8c2e5a7f1d3b9e0a4c6f8b2d0e1a3c5f7b9d2e4a" datatype="html">
+        <source><x id="INTERPOLATION" equiv-text="{{ processed }}"/> de <x id="INTERPOLATION_1" equiv-text="{{ total }}"/> cortes procesados</source>
+        <target>slices processed</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/viewer/viewer.component.html</context>
+          <context context-type="linenumber">7</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="settings.language" datatype="html">
+        <source>Idioma</source>
+        <target>Language</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/settings/settings.component.html</context>
+          <context context-type="linenumber">14</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="settings.darkTheme" datatype="html">
+        <source>Tema oscuro</source>
+        <target>Dark theme</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/settings/settings.component.html</context>
+          <context context-type="linenumber">21</context>
+        </context-group>
+        <note priority="1" from="description">Settings toggle</note>
+        <note priority="1" from="meaning">settings</note>
+      </trans-unit>
+      <trans-unit id="settings.spacing" datatype="html">
+        <source>Espaciado en mm </source>
+        <target>Spacing in mm </target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/settings/settings.component.html</context>
+          <context context-type="linenumber">28</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="settings.save" datatype="html">
+        <source>Guardar preferencias</source>
+        <target>Save preferences</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/settings/settings.component.html</context>
+          <context context-type="linenumber">35</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="report.autoGenerated" datatype="html">
+        <source>Informe generado automáticamente<x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br/&gt;"/>Revise antes de enviar</source>
+        <target>Report generated automatically<x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br/&gt;"/>Review before sending</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/reports/reports.component.html</context>
+          <context context-type="linenumber">42</context>
+        </context-group>
+        <note priority="1" from="description">Report footer</note>
+      </trans-unit>
+      <trans-unit id="auth.logout" datatype="html">
+        <source>Cerrar sesión</source>
+        <target>Sign out</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/app/app.component.html</context>
+          <context context-type="linenumber">49</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="help.disclaimer" datatype="html">
+        <source>&lt;p&gt;&lt;b&gt;Aviso de uso clínico&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Este programa es una herramienta de apoyo al diagnóstico por imagen. Las mediciones de densidad, distancia y volumen que ofrece se calculan a partir de los datos DICOM recibidos y dependen de la calibración del equipo de tomografía computarizada, del grosor de corte y del protocolo de adquisición.&lt;/p&gt;&lt;p&gt;Ningún resultado mostrado sustituye el criterio de un radiólogo cualificado. Antes de emitir un informe, compruebe que la serie seleccionada corresponde al paciente correcto, que la fecha del estudio es la esperada y que no faltan cortes en la reconstrucción.&lt;/p&gt;&lt;ul&gt;&lt;li&gt;No utilice las imágenes comprimidas para diagnóstico primario.&lt;/li&gt;&lt;li&gt;Verifique la ventana aplicada antes de interpretar densidades.&lt;/li&gt;&lt;li&gt;Anonimice siempre los datos antes de compartir un estudio fuera del centro.&lt;/li&gt;&lt;/ul&gt;&lt;p&gt;Si detecta un comportamiento inesperado, contacte con el servicio de soporte técnico indicando el identificador del estudio.&lt;/p&gt;</source>
+        <target>&lt;p&gt;&lt;b&gt;Clinical use notice&lt;/b&gt;&lt;/p&gt;&lt;p&gt;This program is a decision-support tool for diagnostic imaging. Its density, distance and volume measurements are computed from the DICOM data received and depend on the scanner calibration, slice thickness and acquisition protocol.&lt;/p&gt;&lt;p&gt;No result shown replaces the judgement of a qualified radiologist. Before issuing a report, check that the selected series belongs to the right patient, that the study date is as expected and that no slices are missing.&lt;/p&gt;&lt;ul&gt;&lt;li&gt;Do not use compressed images for primary diagnosis.&lt;/li&gt;&lt;li&gt;Check the applied window before interpreting densities.&lt;/li&gt;&lt;li&gt;Always anonymise data before sharing a study outside the centre.&lt;/li&gt;&lt;/ul&gt;&lt;p&gt;If you notice unexpected behaviour, contact technical support quoting the study identifier.&lt;/p&gt;</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/help/help.component.html</context>
+          <context context-type="linenumber">56</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="about.version" datatype="html">
+        <source>Versión</source>
+        <target>Version</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/help/help.component.html</context>
+          <context context-type="linenumber">63</context>
+        </context-group>
+        <note priority="1" from="description">About dialog label</note>
+        <note priority="1" from="meaning">about</note>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
