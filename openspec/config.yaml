@@ -1,32 +1,51 @@
 schema: spec-driven
 
 context: |
-  Product: a Streamlit app for translating Angular XLIFF 1.2 (.xlf) message catalogs.
-  Flow: upload .xlf -> parse -> show source language -> pick target locale ->
-  paginate trans-units 10 per page -> type target text per unit -> save batch ->
-  optionally sign on a canvas -> download the translated .xlf.
+  Product: a Streamlit app for translating Angular XLIFF 1.2 (.xlf) message
+  catalogs, one translation unit per screen.
 
-  Tech stack: Python 3.11+, Streamlit (presentation only), standard library
-  xml.etree/lxml for XLIFF, pytest for tests.
+  Flow: upload .xlf -> parse -> classify by content, never by file name
+  (fresh / partial / completed) -> choose a target language for a fresh
+  catalog, or adopt the one the document already declares -> translate one unit
+  per screen, moving with Prev/Next or by ordinal, resuming at the first
+  unresolved unit -> optionally copy the source into the target as a starting
+  point -> Save draft at any time, or Download once every unit is translated.
+  Both exports go through the browser save dialog, so the app never chooses a
+  location on disk.
+
+  Placeholder safety is the point of the product. Angular's inline <x/> elements
+  are masked as {1}...{n} while a human edits, and unmasked losslessly on write,
+  so the emitted XML is byte-equivalent for everything the translator did not
+  change. A unit whose target placeholders do not match its source's is invalid:
+  the app refuses to move off it and refuses to export the catalog. Clearing a
+  target is always permitted, so no unit can trap the translator.
+
+  Out of scope for now: machine translation, and signing or embedding a
+  signature image.
+
+  Tech stack: Python 3.11+, Streamlit (presentation only), the standard library
+  xml.etree.ElementTree for XLIFF, pytest for tests.
 
   Architecture: strict Clean Architecture in four layers.
     - domain/         Business entities and value objects only. No I/O, no
                       framework imports, no Streamlit, no XML libraries.
     - application/    Use cases orchestrating domain objects. Depends on domain
                       and on ports (abstract interfaces) it declares itself.
-    - infrastructure/ Implementation details: XLIFF parsing/serialisation, file
-                      I/O, encoding and compression. Implements application ports.
-    - presentation/   Streamlit pages, widgets and session-state adapters. Holds
-                      no business logic; it only calls use cases and renders their
-                      results. Business rules must be testable with no Streamlit.
+    - infrastructure/ Implementation details: XLIFF parsing and serialisation.
+                      Implements application ports. Exports leave through the
+                      browser, so nothing here writes to the filesystem.
+    - presentation/   Streamlit screens, widgets and session-state adapters.
+                      Holds no business logic; it only calls use cases and
+                      renders their results. Business rules must be testable
+                      with no Streamlit.
   Dependencies point inwards only: presentation -> application -> domain.
   infrastructure depends on application ports, never the reverse.
 
   Code style: Object Calisthenics.
     1. One level of indentation per method.
     2. No else keyword.
-    3. Wrap all primitives and strings in value objects (LanguageCode, UnitId,
-       SourceText, TargetText, PageNumber...).
+    3. Wrap all primitives and strings in value objects (LanguageCode,
+       UnitIdentifier, SourceContent, TargetContent, CatalogPosition...).
     4. First-class collections (a class holding a collection holds no other field).
     5. One dot per line.
     6. No abbreviations in names.
@@ -36,6 +55,9 @@ context: |
   Hard limits: functions under 20 lines, classes under 200 lines.
   One class per file, named after the class, with its own dedicated unit test
   file mirroring the package path.
+
+  Agents must not perform git write operations; see AGENTS.md. This is enforced
+  by a hook and a plugin, not only by convention.
 
 rules:
   proposal:
@@ -48,6 +70,7 @@ rules:
   tasks:
     - Break tasks into chunks of max 1 hour
     - Each task that adds a class also adds its unit test file
+    - Never include a git operation in a task; the user performs those
 
 operations:
   apply:

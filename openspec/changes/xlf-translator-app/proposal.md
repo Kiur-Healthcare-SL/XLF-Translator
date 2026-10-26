@@ -3,43 +3,51 @@
 ## Why
 
 Angular i18n catalogs are translated by hand in a text editor, and the cost is
-visible in this project's shipped `messages.en-GB.xlf`: two units lost all four
-of their `<x/>` placeholders, so a dialog's close button no longer renders in
-the en-GB build, and one unit was never translated. A guided tool that makes
-placeholder loss structurally impossible removes that class of bug before it
-ships.
+visible in a shipped `ace-app` catalog: two units lost all their `<x/>`
+placeholders, so a dialog's close button no longer renders. A guided tool that
+makes placeholder loss impossible to export removes that class of bug.
 
 ## What Changes
 
 - New Streamlit app: upload an `.xlf`, translate one unit per screen, download.
-- Parse XLIFF 1.2; reject non-conforming files, naming what was expected.
+- Parse XLIFF 1.2 encoded as UTF-8, up to 4 MiB. Refuse anything else, and
+  any document declaring no source language, naming what was expected.
 - Mask inline `<x/>` placeholders as `{1}`...`{n}` while editing; unmask
   losslessly on write.
 - Refuse navigation off a unit whose target placeholders differ from its
-  source's. Clearing the target is always permitted, so no unit traps the
-  translator.
-- Classify uploads by content, not filename: fresh, partial, completed. Resume
-  at the first unresolved unit; a completed file opens on the download screen.
-- "Save draft" and "Download" both emit an `.xlf` via the browser save dialog.
-  Draft naming: `<stem>.<target-language>.draft.xlf`.
+  source's. Clearing the target is always permitted.
+- Classify uploads by content: fresh, partial, completed. Resume at the first
+  unresolved unit.
+- A fresh catalog declares no target language: the translator chooses one in a
+  language form. A re-uploaded draft declares one, and it is adopted.
+- Whitespace-only sources are auto-filled as translated, and the translator is
+  warned which units were auto-filled. A whitespace-only target counts as
+  untranslated.
+- "Save draft" is always permitted and names its file
+  `<stem>.<target-language>.draft.xlf`. "Download" is refused while any unit is
+  untranslated or invalid and names its file `<stem>.<target-language>.xlf`.
+  Both go through the browser save dialog and declare both languages.
+- Output keeps every element the app does not edit, including `<note>` and
+  `<context-group>`. Byte-level formatting is not guaranteed.
 - A docs screen describing the intended workflow.
-- **ASSUMPTION** Emit correct `source-language` and `target-language`, and omit
-  `state` on `<target>`. The repo's current output carries
-  `source-language="en-US"` and no target language.
-- Non-goals: machine translation and signature embedding, both deferred and
-  retained in `design-notes.md`.
+- Synthetic test fixtures for an imaginary CT-scan (TAC) analysis app, modelled
+  on the measured profile of the `ace-app` catalogs but not copied from them.
+- `AGENTS.md` updated to the current product; `design-notes.md` created to hold
+  deferred decisions.
+- Non-goals: machine translation, signature embedding, encodings other than
+  UTF-8.
 
 ## Capabilities
 
 ### New Capabilities
-- `xliff-catalog`: parsing, classification and serialisation of XLIFF 1.2,
-  including file metadata and `<target>` emission rules.
+- `xliff-catalog`: parsing, refusal, classification and serialisation of XLIFF
+  1.2, including language metadata and preservation of unedited elements.
 - `placeholder-masking`: the bijection between `<x/>` elements and `{n}` tokens,
   and placeholder equality between source and target.
-- `translation-session`: per-unit state, navigation, the navigation gate, resume
-  position and completion.
-- `file-exchange`: upload acceptance and rejection, artifact naming, download
-  gate.
+- `translation-session`: unit state, navigation, the navigation gate, resume
+  position, auto-fill warnings and completion.
+- `file-exchange`: upload limits, target language, artifact naming, export
+  gates.
 - `app-guide`: the documentation screen and how it is reached.
 
 ### Modified Capabilities
@@ -48,31 +56,21 @@ None. The project has no existing specs.
 ## Impact
 
 A new standalone Python project: Streamlit, stdlib ElementTree, pytest, four
-layers. `ace-app` is unmodified; its catalogs are acceptance fixtures.
+layers. `ace-app` is unmodified and is not a dependency; its catalogs informed
+the fixture profile only. `AGENTS.md` and `openspec/config.yaml` are aligned
+with the revised product.
 
-## Assumptions
+## Deferred
 
-- **A1** Uploads may contain invalid targets; those units enter an `invalid`
-  state and must be repaired before download.
-- **A2** Whitespace-only sources are auto-filled with their own source at parse
-  time, so item 66 does not strand a resuming translator.
-- **A3** A "go to item N" control exists alongside Prev/Next.
-- **A4** Save draft is never gated; only navigation and download are.
-- **A5** A target identical to its source is valid; this occurs 18 times in real
-  data.
-
-## Open Questions
-
-- Correct metadata, or bit-compatibility with the existing toolchain?
-- Whitespace-only units: auto-fill, exclude from the count, or treat normally?
-- Must the download gate also refuse untranslated units, or is that unreachable
-  by construction?
+Recorded in design.md, later in `design-notes.md`: whitespace-only auto-fill
+(N1), work lost on refresh (N2), language form controls (N3), byte order marks
+(N4).
 
 ## Risks
 
 - A mask/unmask defect corrupts every file written. Mitigated by a round-trip
-  property test over all 360 real units, before any UI.
-- Marking whitespace needs `unsafe_allow_html`, which renders the literal
-  `<p>`/`<ul>` text in sources unless escaped first.
+  test over every fixture unit, before any UI.
+- Marking whitespace needs `unsafe_allow_html`, which renders literal `<p>` text
+  in sources unless escaped first.
 - Streamlit widget state keyed by anything but unit id leaks targets between
   units.

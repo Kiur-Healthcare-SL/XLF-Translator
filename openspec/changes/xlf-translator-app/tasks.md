@@ -3,80 +3,93 @@
 Every task that adds a class adds its dedicated unit test file mirroring the
 package path. Tasks are sized at one hour or less.
 
-## 1. Scaffolding and guards
+## 1. Scaffolding, fixtures and project documents
 
 - [ ] 1.1 Create the four-layer package structure and a mirrored `tests/` tree; verify `pytest` runs and reports zero tests without error
-- [ ] 1.2 Add `pyproject.toml` with Streamlit and pytest; verify a clean install succeeds and `streamlit --version` runs
-- [ ] 1.3 Commit `messages.xlf` and `messages.en-GB.xlf` as fixtures; verify a test asserts 360 units in each and 359 targets in the second
-- [ ] 1.4 Add an import-direction guard test asserting domain imports no Streamlit, no XML library and no outer layer; verify it fails when a deliberate violating import is added
-- [ ] 1.5 Add an AST-based limits test for functions under 20 lines, classes under 200 lines and one class per file; verify it reports a deliberately oversized sample
+- [ ] 1.2 Add `pyproject.toml` with Streamlit and pytest, and `.streamlit/config.toml` setting `server.maxUploadSize = 4`; verify a clean install succeeds and `streamlit --version` runs
+- [ ] 1.3 Write `tests/fixtures/messages.xlf`, a fresh 60-unit Spanish catalog for a CT-scan (TAC) analysis app following the profile in design D14, with context groups, notes and one comment; verify it is well-formed and declares `source-language="es"` and no target language
+- [ ] 1.4 Write `tests/fixtures/messages.en-GB.xlf` from the same units following D14 (no targets at 30 and 31, whitespace-only target at 38, placeholders deleted at 44 and 52); verify it is well-formed and declares `target-language="en-GB"`
+- [ ] 1.5 Write `tests/fixtures/messages.fr.xlf`, a completed French catalog of the same units; verify it is well-formed and every unit except 30 carries a target
+- [ ] 1.6 Add a fixture profile test using only the standard library; verify unit counts, shared identifiers, the placeholder, whitespace, escaped-HTML, brace, note and context-group counts of D14, and that every file is under 4 MiB
+- [ ] 1.7 Add an import-direction guard test asserting domain imports no Streamlit, no XML library and no outer layer; verify it fails when a deliberate violating import is added
+- [ ] 1.8 Add an AST-based limits test for functions under 20 lines, classes under 200 lines and one class per file; verify it reports a deliberately oversized sample
+- [ ] 1.9 Update `AGENTS.md`: describe the product as one unit per screen with drafts and no signing, drop file I/O and compression from the infrastructure row, and point to `design-notes.md`; verify no reference to pagination, batches or signing remains
+- [ ] 1.10 Create `design-notes.md` holding deferred notes N1 to N4 and the deferred signature and machine-translation work, and align the `openspec/config.yaml` context (structural fidelity instead of byte equivalence, size and encoding limits); verify every link to `design-notes.md` resolves
 
-## 2. Domain: identity and language
+## 2. Domain: identity, language and documents
 
 - [ ] 2.1 Add `UnitIdentifier` and its test; verify equality, rejection of an empty identifier, and use as a dictionary key
-- [ ] 2.2 Add `LanguageCode` and its test; verify acceptance of `es` and `en-GB` and rejection of malformed tags
-- [ ] 2.3 Add `ArtifactName` and its test; verify it renders `messages.en-GB.draft.xlf` and `messages.en-GB.xlf` from a stem and a language
+- [ ] 2.2 Add `LanguageCode` and its test; verify acceptance of `es`, `fr` and `en-GB` and rejection of malformed tags
+- [ ] 2.3 Add `LanguagePair` and its test; verify a pair with a source and no target, and adoption of a target
+- [ ] 2.4 Add `ArtifactName` and its test; verify it renders `messages.en-GB.draft.xlf` and `messages.en-GB.xlf` from a stem and a language
+- [ ] 2.5 Add `DocumentSize` and its test; verify 4,194,304 bytes is within the limit and 4,194,305 is not
+- [ ] 2.6 Add `UploadedDocument` and `CatalogRefusal` with their tests; verify the stem is taken from `messages.xlf` and a refusal states expectation and finding
 
 ## 3. Domain: content and placeholders
 
-- [ ] 3.1 Add `PlaceholderName` and `PlaceholderAttributes` with their tests; verify attribute round-tripping for content type and equivalent text
+- [ ] 3.1 Add `PlaceholderName` and `PlaceholderAttributes` with their tests; verify attributes keep their order and round-trip content type and equivalent text
 - [ ] 3.2 Add `Placeholder` and its test; verify two placeholders with the same name and attributes are equal and that it reports the markup it stands for
 - [ ] 3.3 Add `PlaceholderToken` and its test; verify rendering as `{1}` and parsing of `{10}`, and rejection of `{0}` and `{1`
-- [ ] 3.4 Add `Content` as a first-class collection of text runs and placeholders with its test; verify text-only content, placeholder-only content, and content whose text contains `<p>` as literal characters
+- [ ] 3.4 Add `Content` as a first-class collection of text runs and placeholders with its test; verify text-only content, placeholder-only content, content whose text contains `<p>` as literal characters, and whitespace-only detection
 
 ## 4. Domain: masking
 
 - [ ] 4.1 Add `ContentMask` and its test; verify a paired-placeholder source masks to `{1}limited functionality{2}` and placeholder-free content is unchanged
-- [ ] 4.2 Add `ContentUnmask` and its test; verify tokens restore placeholder name, content type and equivalent text, and that `{2}word{1}` restores in reversed order
+- [ ] 4.2 Add `ContentUnmask` and its test; verify tokens restore placeholder name and attributes in order, and that `{2}word{1}` restores in reversed order
 - [ ] 4.3 Add literal-brace escaping to both and extend their tests; verify content containing a literal `{1}` round-trips and yields no token
-- [ ] 4.4 Add the round-trip property test over every unit of both fixtures; verify `unmask(mask(source)) == source` holds for all 360 units in each catalog
-- [ ] 4.5 Add `PlaceholderComparison` and its test; verify it names a missing token with its markup, a repeated token, and an unknown token, and passes on reordered tokens
+- [ ] 4.4 Add `PlaceholderComparison` and its test; verify it names a missing token with its markup, a repeated token, and an unknown token, and passes on reordered tokens
 
 ## 5. Domain: units, catalog, session
 
-- [ ] 5.1 Add `TranslationUnit` and its test; verify the three states, that a target equal to its source is translated, and that a whitespace-only source is translated on construction
-- [ ] 5.2 Add `Catalog` as a first-class collection with its test; verify document order, ordinal lookup, and rejection of duplicate identifiers
-- [ ] 5.3 Add catalog classification with its test; verify fresh, partial and completed against both fixtures
-- [ ] 5.4 Add `CatalogPosition` and its test; verify absolute position reporting, refusal to step past either end, and jump to an ordinal
-- [ ] 5.5 Add `TranslationSession` and its test; verify resume lands on ordinal 66 for `messages.en-GB.xlf`
-- [ ] 5.6 Add the navigation gate to `TranslationSession` and extend its test; verify both directions are refused while the current unit is invalid and permitted once the target is cleared
-- [ ] 5.7 Add completion reporting with its test; verify it names the ordinals of all unresolved units
+- [ ] 5.1 Add `TranslationUnit` and its test; verify the three states, that empty and whitespace-only targets are untranslated, and that a target equal to its source is translated
+- [ ] 5.2 Add whitespace-only source auto-fill to `TranslationUnit` and extend its test; verify such a unit is translated and auto-filled, and that clearing its target restores the source
+- [ ] 5.3 Add `Catalog` as a first-class collection with its test; verify document order, ordinal lookup, and rejection of duplicate identifiers
+- [ ] 5.4 Add `CatalogClassification` and its test; verify fresh (including a catalog with one auto-filled unit), partial (a gap, or imported damage) and completed
+- [ ] 5.5 Add `CatalogPosition` and its test; verify absolute position reporting, refusal to step past either end, and jump to an ordinal
+- [ ] 5.6 Add `TranslationSession` and its test; verify resume lands on the first untranslated or invalid unit, passing over auto-filled units
+- [ ] 5.7 Add the navigation gate to `TranslationSession` and extend its test; verify both directions are refused while the current unit is invalid and permitted once the target is cleared
+- [ ] 5.8 Add `CompletionReport` and `AutoFillReport` with their tests; verify completion names untranslated and invalid ordinals together, and auto-fill names ordinal 30
 
 ## 6. Application: views, ports, use cases
 
-- [ ] 6.1 Add `UnitView` and `SessionView` builders with their tests; verify a unit describes itself without the domain exposing accessors
-- [ ] 6.2 Declare the `CatalogReader`, `CatalogWriter` and `SessionRepository` ports with in-memory fakes and their tests; verify the fakes satisfy the ports
-- [ ] 6.3 Add `OpenCatalog` and its test; verify a fresh catalog requires a target language and a catalog declaring `en-GB` adopts it without asking
-- [ ] 6.4 Add `MoveToUnit` and its test; verify stepwise movement, jumping, and refusal while the current unit is invalid
-- [ ] 6.5 Add `EnterTarget` and its test; verify state transitions and that the placeholder difference is returned on mismatch
-- [ ] 6.6 Add `CopySourceIntoTarget` and its test; verify tokens, leading non-breaking spaces and escaped markup all arrive in the target
-- [ ] 6.7 Add `ExportDraft` and its test; verify it succeeds while a unit is invalid and names the artifact `messages.en-GB.draft.xlf`
-- [ ] 6.8 Add `ExportFinal` and its test; verify refusal listing unresolved ordinals and success naming `messages.en-GB.xlf`
+- [ ] 6.1 Add `UnitView` and `SessionView` builders with their tests; verify a unit describes itself, including its auto-filled mark, without the domain exposing accessors
+- [ ] 6.2 Declare the `CatalogReader`, `CatalogWriter` and `SessionRepository` ports with in-memory fakes and their tests; verify the fakes satisfy the ports and the writer receives the original document
+- [ ] 6.3 Add `OpenDocument` and `OpenCatalog` with their tests; verify an oversized document is refused before the reader is called, and that opening reports auto-filled ordinals
+- [ ] 6.4 Add `ChooseTargetLanguage` and extend `OpenCatalog`'s test; verify a fresh catalog requires a language and a catalog declaring `en-GB` adopts it without asking
+- [ ] 6.5 Add `MoveToUnit` and its test; verify stepwise movement, jumping, and refusal while the current unit is invalid
+- [ ] 6.6 Add `EnterTarget` and its test; verify state transitions, that a whitespace-only target is untranslated, and that the placeholder difference is returned on mismatch
+- [ ] 6.7 Add `CopySourceIntoTarget` and its test; verify tokens, leading non-breaking spaces and escaped markup all arrive in the target
+- [ ] 6.8 Add `ExportDraft` and its test; verify it succeeds while units are untranslated or invalid and names the artifact `messages.en-GB.draft.xlf`
+- [ ] 6.9 Add `ExportFinal` and its test; verify refusal naming untranslated and invalid ordinals, and success naming `messages.en-GB.xlf`
 
 ## 7. Infrastructure: XLIFF
 
-- [ ] 7.1 Add `ElementTreeCatalogReader` and its test; verify 360 units parse from the fixture with whitespace and inline placeholders intact
-- [ ] 7.2 Add `CatalogRefusal` answers to the reader and extend its test; verify refusal of non-XML, of version 2.0, of a document with no units, and of duplicate identifiers, each naming expectation and finding
-- [ ] 7.3 Add `ElementTreeCatalogWriter` and its test; verify no `state` attribute, no target element for untranslated units, and both language attributes declared
-- [ ] 7.4 Add a serialisation round-trip test across both fixtures; verify re-parsing the output yields an equal catalog
+- [ ] 7.1 Add `ElementTreeCatalogReader` and its test; verify the fresh fixture parses to 60 units with whitespace, inline placeholders and source language `es` intact
+- [ ] 7.2 Extend the reader to read existing targets and the declared target language; verify the en-GB fixture yields targets for 58 units and target language `en-GB`
+- [ ] 7.3 Add refusals to the reader and extend its test; verify refusal of non-XML, a non-UTF-8 declaration, invalid UTF-8 bytes, version 2.0, no file element, no source language, no units and duplicate identifiers, each naming expectation and finding
+- [ ] 7.4 Add `ElementTreeCatalogWriter` and its test; verify a new target follows its source with no `state`, an edited imported target is replaced, a cleared target is removed, and `target-language` is declared
+- [ ] 7.5 Add the fidelity test over all three fixtures; verify notes, context groups, comments, untouched targets with their `state`, and the default namespace survive a write with no `ns0:` prefix
+- [ ] 7.6 Add the round-trip tests across all three fixtures; verify `unmask(mask(content))` equals the original for every source and target, and re-parsing writer output yields an equal catalog
 
 ## 8. Presentation
 
-- [ ] 8.1 Add `SessionStateSessionRepository` and its test; verify a session survives a simulated rerun and is keyed independently of widget state
-- [ ] 8.2 Build the upload screen; verify a valid catalog opens a session and a refused document leaves none, showing the reason
-- [ ] 8.3 Build target-language selection for fresh catalogs; verify the chosen code reaches the session and is skipped when the document declares one
-- [ ] 8.4 Build the translation screen layout with the file name as heading, source left, target right, and "item x of 360" above the target; verify against a session fixture
+- [ ] 8.1 Add `SessionStateSessionRepository` and its test; verify an open document survives a simulated rerun and is keyed independently of widget state
+- [ ] 8.2 Build the upload screen; verify a valid catalog opens a session and a refused document (too large, wrong encoding, no source language) leaves none, showing the reason
+- [ ] 8.3 Build the language form for fresh catalogs; verify the chosen code reaches the session and the form is skipped when the document declares a target language
+- [ ] 8.4 Build the translation screen layout with the file name as heading, source left, target right, and "item x of 60" above the target; verify against a session fixture
 - [ ] 8.5 Add the whitespace marker renderer and its test; verify a source containing `<p>` renders as visible text and leading whitespace is marked
-- [ ] 8.6 Wire Prev, Next and the copy button, each keyed by unit identifier; verify unit 8 does not inherit unit 7's text
-- [ ] 8.7 Wire the navigation gate into the screen; verify the refusal message names the missing token and both buttons are inert while invalid
-- [ ] 8.8 Add the go-to-ordinal control; verify it moves within range and refuses an ordinal outside the catalog
-- [ ] 8.9 Add the "Save draft" download; verify it is offered while a unit is invalid and delivers the draft-named artifact
-- [ ] 8.10 Build the completed screen with the gated final download and the unresolved list; verify each listed ordinal jumps to its unit
-- [ ] 8.11 Gate "Upload another file" on a requested final export; verify it is absent before and present after
-- [ ] 8.12 Build the docs screen and its entry point; verify the session position and entered targets survive a visit
+- [ ] 8.6 Show the auto-fill warnings: a notice on open listing auto-filled ordinals, and a mark on an auto-filled current unit; verify both appear for unit 30 of the fresh fixture
+- [ ] 8.7 Wire Prev, Next and the copy button, each keyed by unit identifier; verify unit 8 does not inherit unit 7's text
+- [ ] 8.8 Wire the navigation gate into the screen; verify the refusal message names the missing token and both buttons are inert while invalid
+- [ ] 8.9 Add the go-to-ordinal control; verify it moves within range and refuses an ordinal outside the catalog
+- [ ] 8.10 Add the "Save draft" download; verify it is offered while units are untranslated or invalid and delivers the draft-named artifact
+- [ ] 8.11 Build the completed screen with the gated final download and the unresolved list; verify each listed ordinal jumps to its unit
+- [ ] 8.12 Gate "Upload another file" on a requested final export; verify it is absent before and present after
+- [ ] 8.13 Build the docs screen and its entry point; verify the session position and entered targets survive a visit
 
 ## 9. Acceptance
 
-- [ ] 9.1 Add an end-to-end test over `messages.en-GB.xlf`; verify it classifies as partial, resumes at ordinal 66, and refuses the final export while naming the two units whose placeholders were deleted
-- [ ] 9.2 Add an end-to-end test over `messages.xlf`; verify a fresh catalog requires a target language, accepts a translation, and exports a draft that re-opens as partial
-- [ ] 9.3 Run the app manually end to end against both fixtures; verify the screens, gates and downloads behave as the specs describe
+- [ ] 9.1 Add an end-to-end test over `messages.en-GB.xlf`; verify it classifies as partial, resumes at ordinal 31, and refuses the final export naming 31, 38, 44 and 52
+- [ ] 9.2 Add an end-to-end test over `messages.xlf`; verify it requires a target language, reports unit 30 as auto-filled, accepts a translation, and exports a draft that re-opens as partial declaring both languages with its notes and context groups intact
+- [ ] 9.3 Add an end-to-end test over `messages.fr.xlf`; verify it classifies as completed, adopts `fr`, and produces `messages.fr.xlf` as a final export
+- [ ] 9.4 Run the app manually end to end against all three fixtures; verify the screens, gates, warnings and downloads behave as the specs describe

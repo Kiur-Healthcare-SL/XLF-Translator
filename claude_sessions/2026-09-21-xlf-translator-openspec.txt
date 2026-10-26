@@ -1,0 +1,261 @@
+===============================================================================
+SESSION RECORD - XLIFF TRANSLATOR APP: SPEC-DRIVEN PLANNING WITH OPENSPEC
+Date:      2026-09-21
+Project:   ~/Proyectos/hello-openspec
+Method:    OpenSpec (explore -> propose -> apply -> archive); planning only
+Outcome:   A reviewed, validated change with proposal, specs, design and tasks,
+           plus enforced guardrails. No application code written yet.
+===============================================================================
+
+This is a written record of the session, composed at its end. It is a summary
+of what was decided and why, not a verbatim transcript.
+
+
+-------------------------------------------------------------------------------
+1. WHAT WE SET OUT TO BUILD
+-------------------------------------------------------------------------------
+
+A Streamlit application for translating Angular i18n message catalogs (XLIFF
+1.2 .xlf files). The original brief:
+
+  - upload an .xlf file and parse it
+  - show the source language, choose a target language
+  - work through the translation units, entering a target for each
+  - store the translations back into the XLIFF document
+  - download the translated file
+  - sign the file on a drawing canvas before download, embedding a compact
+    encoded image of the signature
+
+Constraints set at the outset: Clean Architecture in four layers (domain,
+application, infrastructure, presentation), Object Calisthenics, functions
+under 20 lines, classes under 200 lines, one class per file with its own unit
+test, and presentation decoupled from business logic.
+
+
+-------------------------------------------------------------------------------
+2. METHOD
+-------------------------------------------------------------------------------
+
+The work followed OpenSpec, a spec-driven workflow:
+
+    explore   ->   propose   ->   apply   ->   archive
+  think and      write the      implement     specs become
+  investigate    artifacts      the tasks     durable record
+
+Explore mode is deliberately non-writing: it investigates, questions and
+diagrams, but produces no code and no plan. Propose then turns the conclusions
+into four artifacts on disk. Those artifacts, not the conversation, are the
+handoff to implementation.
+
+The value of this separation showed up immediately: three rounds of exploration
+changed the design substantially before a single line of code existed.
+
+
+-------------------------------------------------------------------------------
+3. WHAT THE REAL DATA REVEALED
+-------------------------------------------------------------------------------
+
+Rather than design in the abstract, we analysed the two catalogs that already
+exist in the ace-app repository.
+
+  messages.xlf         360 units, source language "es", no translations yet
+  messages.en-GB.xlf   the same 360 units, 359 translated
+
+Measured properties that drove the design:
+
+  - 28 units carry inline placeholder elements; 73 placeholders in total; at
+    most 10 in a single unit. They come in pairs, e.g. an opening and closing
+    <b> tag, or a <mat-icon> element wrapping a button.
+  - 42 units carry leading or trailing whitespace, some of it non-breaking
+    spaces that are invisible in an editor.
+  - Several sources contain escaped HTML as literal text; the longest is 974
+    characters.
+  - No source or target contains a brace character anywhere.
+  - 18 targets are identical to their source (proper nouns, brand names).
+  - One unit's source is whitespace only, and was never translated.
+
+THE FINDING THAT SHAPED THE PRODUCT
+
+Two units in the already-shipped en-GB translation had lost every one of their
+placeholders. A human translated the sentence and deleted the markup around it:
+
+    SOURCE:  " Vuelves a tener conexion! <START_TAG_BUTTON><START_TAG_MAT_ICON>
+              close </CLOSE_TAG_MAT_ICON></CLOSE_TAG_BUTTON>"
+    TARGET:  " Connection is back! "
+
+In the en-GB build, that dialog has no close button. This is in production
+today. It is exactly the class of defect the tool is being built to prevent,
+and it reframed the product: the core feature is not data entry, it is making
+placeholder loss impossible to export.
+
+
+-------------------------------------------------------------------------------
+4. THE CENTRAL DESIGN DECISION: PLACEHOLDER MASKING
+-------------------------------------------------------------------------------
+
+The question was what a translator actually edits. Two options:
+
+  A) MASKED TOKENS               B) RAW INLINE XML
+     "{1}limited functionality{2}"  '<x id="START_BOLD_TEXT" ctype="x-b"
+     legend: {1}=<b>  {2}=</b>       equiv-text="<b>"/>limited functionality...'
+
+Both write byte-identical XML to disk. Masking is a display and editing
+affordance, reversed losslessly on save; the placeholders, their identifiers
+and their attributes are preserved either way.
+
+Option A was chosen. The deciding argument was error reporting: under A, a
+deleted placeholder is caught exactly and the translator can be told "you
+deleted {2}, which is </b>". Under B, a mistyped quote inside an attribute
+makes the fragment unparseable, so the app can only report that the text is
+malformed, not what was lost.
+
+The safety property is stated as a contract:
+
+    unmask(mask(source)) == source                      for all 360 units
+    placeholders(target) == placeholders(source)        enforced
+    reordering of tokens is legal - languages differ
+
+The first line is a property test runnable against the real catalogs before any
+user interface exists. It is scheduled as task 4.4, early and deliberately.
+
+
+-------------------------------------------------------------------------------
+5. DECISIONS TAKEN, AND WHAT THEY REMOVED
+-------------------------------------------------------------------------------
+
+The design got smaller as it got clearer. Each decision below deleted work.
+
+  ONE UNIT PER SCREEN, not ten per page
+      Prev/Next through all 360 units, absolute position ("item 7 of 360"),
+      resume at the first unresolved unit. This removed pagination, batch
+      saving, and an entire class of Streamlit state bug.
+
+  DRAFTS ARE JUST XLIFF FILES
+      A draft and a finished download are the same artifact with different
+      amounts filled in. Re-uploading a draft resumes it. This removed the
+      storage layer entirely: the app never writes to disk, it hands the file
+      to the browser's save dialog.
+
+  CLASSIFY BY CONTENT, NOT BY FILE NAME
+      No targets = fresh. Some = partial. All = completed. A file's name is
+      cosmetic. The target language is read from the document when present, so
+      it is never asked for twice.
+
+  ERRORS BLOCK, WITH ONE RELEASE VALVE
+      A unit whose target placeholders do not match its source cannot be left,
+      in either direction, and the catalog cannot be exported. Clearing the
+      target is always allowed, so no translator is ever without a legal move.
+      This replaced an earlier "continue anyway?" dialog, removing the most
+      fragile piece of Streamlit state in the design.
+
+  IMPORTED DAMAGE IS REPAIRABLE, NOT REJECTED
+      Uploading the existing broken en-GB file does not fail. Its two damaged
+      units are marked invalid, the app navigates to them, and the download
+      stays blocked until they are fixed.
+
+  SIGNATURES DEFERRED
+      Dropped from the first change and kept in design-notes.md. During
+      exploration it emerged that a signature over content that can be reopened
+      and edited attests nothing without an integrity check, which was more
+      design than the first release warranted.
+
+  NO MACHINE TRANSLATION
+      Explicitly deferred. A "copy source into target" button covers the
+      starting-point need, carrying whitespace, escaped markup and tokens.
+
+A free acceptance test falls out of all this: upload the existing
+messages.en-GB.xlf, and the app classifies it as partial, resumes on the
+whitespace-only unit, and then refuses to export while naming the two units
+whose close buttons vanished. The tool catches a bug that already shipped.
+
+
+-------------------------------------------------------------------------------
+6. WHAT WAS PRODUCED
+-------------------------------------------------------------------------------
+
+Change "xlf-translator-app", validated by the OpenSpec CLI:
+
+  proposal.md   494 words. Why, what changes, five capabilities, plus explicit
+                Assumptions, Open Questions and Risks sections.
+
+  specs/        Five delta specifications, 27 requirements, every scenario
+                verifiable without starting Streamlit:
+                  xliff-catalog        parse, classify, serialise
+                  placeholder-masking  the mask/unmask bijection
+                  translation-session  unit state, navigation, the gate
+                  file-exchange        upload, naming, the export gate
+                  app-guide            the documentation screen
+
+  design.md     Nine decisions with alternatives considered, a table assigning
+                every concept to a layer, three ports named with their
+                implementations, and risks with mitigations.
+
+  tasks.md      Nine groups, 48 tasks, each sized at an hour or less, each
+                stating how completion is verified, each class-adding task
+                paired with its test file.
+
+Supporting files: AGENTS.md (conventions for any agent working in the repo),
+design-notes.md (decisions and deferred work), openspec/config.yaml (project
+context and per-artifact rules that steer future generated artifacts).
+
+Three questions remain deliberately open and are recorded as assumptions rather
+than hidden: whether to emit corrected language metadata or match the existing
+toolchain's output; how to treat whitespace-only units; and whether the export
+gate needs to consider untranslated units at all.
+
+
+-------------------------------------------------------------------------------
+7. GUARDRAILS
+-------------------------------------------------------------------------------
+
+A requirement was added that no agent may perform a git write operation -
+commit, push, branch, merge, rebase, and so on - so that version control stays
+under human control. It is enforced mechanically in two harnesses:
+
+  Claude Code   a PreToolUse hook on the shell tool
+  OpenCode      a tool.execute.before plugin
+
+Both call one shared policy, tools/git-write-guard/guard.py, so the two cannot
+drift apart. The policy is an allowlist: any git subcommand not positively
+recognised as read-only is denied, so unknown and future subcommands fail
+closed. It parses command position, so "cd /tmp && git push", "git -C /other
+commit", "bash -c 'git push'" and "find . -exec git add {} ;" are all caught,
+while documentation text that merely mentions a git command is not. 97 checks
+cover both the blocked and the allowed cases.
+
+Both mechanisms were verified working, not merely written.
+
+Worth recording honestly: during this session the guard's own files were
+deleted, and because the harness hook shelled out to the missing script, every
+shell command was refused, not only git ones. The hook was corrected to degrade
+narrowly - when the guard is absent it now refuses git-related commands only.
+A fail-closed control needs its failure mode designed as carefully as its
+success path.
+
+
+-------------------------------------------------------------------------------
+8. WHERE THINGS STAND
+-------------------------------------------------------------------------------
+
+Done:      exploration, four validated planning artifacts, enforced guardrails,
+           project context aligned with the specs.
+Not done:  any application code. No src/ directory exists.
+
+Recommended sequence from here:
+
+  1. Review the five specs and the nine design decisions; settle the three
+     open questions.
+  2. Commit the artifacts.
+  3. Start a fresh session and run the apply workflow, taking the task groups
+     one at a time rather than all 48 at once.
+  4. Do group 1 first on its own and confirm the architecture guards actually
+     fail when violated - otherwise every later verification step is hollow.
+  5. When a decision changes during implementation, revise the artifacts rather
+     than only the code. Otherwise the specifications become fiction, and the
+     archive step would preserve that fiction as the durable record.
+
+The point of the method, in one line: three rounds of investigation against
+real data changed the product substantially - and all of it happened before any
+code existed, where changing your mind is free.
+
+===============================================================================

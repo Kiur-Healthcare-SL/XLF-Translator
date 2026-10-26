@@ -30,9 +30,9 @@ For every unit in a catalog, unmasking the masked form of its content SHALL
 reproduce that content exactly, including placeholder attributes and their
 order.
 
-#### Scenario: Round trip over a real catalog
-- **WHEN** every unit of a 360-unit catalog is masked and then unmasked
-- **THEN** each result equals the original source content exactly
+#### Scenario: Round trip over the fixture catalogs
+- **WHEN** every source and target of every fixture catalog is masked and then unmasked
+- **THEN** each result equals the original content exactly
 
 #### Scenario: Placeholder attributes survive
 - **WHEN** a placeholder declaring an identifier, a content type and equivalent text is masked and unmasked
