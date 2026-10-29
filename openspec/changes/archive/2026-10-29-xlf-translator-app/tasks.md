@@ -92,4 +92,4 @@ package path. Tasks are sized at one hour or less.
 - [x] 9.1 Add an end-to-end test over `messages.en-GB.xlf`; verify it classifies as partial, resumes at ordinal 31, and refuses the final export naming 31, 38, 44 and 52
 - [x] 9.2 Add an end-to-end test over `messages.xlf`; verify it requires a target language, reports unit 30 as auto-filled, accepts a translation, and exports a draft that re-opens as partial declaring both languages with its notes and context groups intact
 - [x] 9.3 Add an end-to-end test over `messages.fr.xlf`; verify it classifies as completed, adopts `fr`, and produces `messages.fr.xlf` as a final export
-- [ ] 9.4 Run the app manually end to end against all three fixtures; verify the screens, gates, warnings and downloads behave as the specs describe
+- [x] 9.4 Run the app manually end to end against all three fixtures; verify the screens, gates, warnings and downloads behave as the specs describe
